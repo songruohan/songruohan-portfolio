@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>一体化智慧养老数字化管理平台 | 宋若晗作品集</title>
+<meta name="description" content="一体化智慧养老数字化管理平台案例：以项目组长身份统筹 12 人团队，完成养老机构护理业务、文件存储与 AI 问答的产品设计与落地。">
+<meta name="theme-color" content="#f4f0e7">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+<noscript><style>[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
+
+</head>
+<body class="project-page">
+<a class="skip-link" href="#caseMain">跳到案例正文</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="nav-shell">
+    <div class="container nav">
+      <a class="brand" href="../index.html" aria-label="返回宋若晗作品集">
+        <span class="brand__mark">宋</span>
+        <span class="brand__text">
+          <span class="brand__name">宋若晗</span>
+          <span class="brand__sub">AI PRODUCT MANAGER</span>
+        </span>
+      </a>
+      <nav class="nav__links" aria-label="主导航">
+        <a class="nav__link" href="../index.html#work">项目</a>
+        <a class="nav__link" href="../index.html#capabilities">能力</a>
+        <a class="nav__link" href="../index.html#experience">经历</a>
+        <a class="nav__link" href="../index.html#contact">联系</a>
+      </nav>
+      <div class="nav__right">
+        <a class="btn btn--sm" href="../assets/resume-product.pdf" download>下载简历 <span aria-hidden="true">↓</span></a>
+        <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="../index.html#work">项目</a>
+  <a href="../index.html#capabilities">能力</a>
+  <a href="../index.html#experience">经历</a>
+  <a href="../index.html#contact">联系</a>
+  <a class="btn" href="../assets/resume-product.pdf" download>下载简历 PDF ↓</a>
+</div>
+
+<main id="caseMain">
+  <section class="case-hero">
+    <div class="container">
+      <div class="case-hero__top">
+        <a class="back-link" href="../index.html#work">返回全部项目</a>
+        <span class="case-hero__label">CASE 02 / PLATFORM / AI AGENT</span>
+      </div>
+      <div class="case-hero__grid">
+        <h1>一体化<br>智慧养老<small>数字化管理平台 · 让护理业务、文件与 AI 问答长在同一套系统里</small></h1>
+        <p class="case-hero__summary">
+          面向养老机构的综合管理平台。把老人档案、床位、护理计划、健康档案、家属探访与文件资源收进一套系统，
+          再用 <strong>千问 + AI Agent</strong> 把知识检索、家属沟通辅助和运营分析变成一线人员真正用得上的能力。
+        </p>
+      </div>
+      <dl class="case-meta">
+        <div><dt>ROLE</dt><dd>项目组长 / 产品设计 / 基础工程</dd></div>
+        <div><dt>TEAM</dt><dd>12 人跨职能项目组</dd></div>
+        <div><dt>TIMELINE</dt><dd>2025.09 — 至今</dd></div>
+        <div><dt>STACK</dt><dd>SpringBoot · MyBatis-Plus · Redis · 千问</dd></div>
+      </dl>
+
+      <div class="case-video">
+        <video controls playsinline preload="metadata" poster="../assets/img/elderly-poster.webp">
+          <source src="../assets/video/elderly-demo.mp4" type="video/mp4">
+          你的浏览器不支持 HTML5 视频播放。
+        </video>
+        <div class="case-video__cap"><span>PROJECT DEMO / 2:32</span><span>建议全屏观看 · 含系统实际操作演示</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container case-body">
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">01</span><h2>背景</h2></aside>
+      <div class="case-content">
+        <h3>养老机构不是缺系统，而是缺一套“大家愿意用”的系统。</h3>
+        <p>
+          在调研中，我们看到大量机构仍依赖纸质登记、Excel 和微信群：老人信息分散、护理计划靠口头交接、
+          家属沟通靠电话、经验沉淀在个别护理员身上。系统并非不存在，但要么太重，要么和真实流程对不上。
+        </p>
+        <div class="case-grid-2">
+          <div class="case-card">
+            <span class="case-card__label">PAIN 01</span>
+            <h4>业务数据分散</h4>
+            <p>老人档案、床位、护理项目、健康记录各有一套口径，查一个人要翻多个表。</p>
+          </div>
+          <div class="case-card">
+            <span class="case-card__label">PAIN 02</span>
+            <h4>护理过程难追踪</h4>
+            <p>护理计划执行靠交接班口头确认，异常情况难以及时暴露和复盘。</p>
+          </div>
+          <div class="case-card">
+            <span class="case-card__label">PAIN 03</span>
+            <h4>家属沟通成本高</h4>
+            <p>家属关心的问题高度重复，护理人员需要反复解释，沟通质量依赖个人经验。</p>
+          </div>
+          <div class="case-card">
+            <span class="case-card__label">PAIN 04</span>
+            <h4>知识难以复用</h4>
+            <p>护理规范、制度文件散落在文件夹里，新人上手慢，运营数据也缺少统一出口。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">02</span><h2>我的角色</h2></aside>
+      <div class="case-content">
+        <h3>项目组长：把 12 个人拉到同一张图上。</h3>
+        <p>
+          这个项目是 12 人的跨职能实训项目。我作为项目组长，负责整体规划、团队协调、需求调研与系统边界定义，
+          搭建 SpringBoot 基础工程，并负责项目介绍与答辩。AI 问答模块的产品设计由我参与完成。
+        </p>
+        <div class="role-grid">
+          <div class="role-card"><h4>统筹与拆解</h4><p>把“做一个养老平台”拆成业务模块、技术模块与验收节点，明确谁在什么时候交付什么。</p></div>
+          <div class="role-card"><h4>业务翻译</h4><p>把护理流程翻译成数据表、角色权限与页面流程，避免研发拿到一句抽象需求。</p></div>
+          <div class="role-card"><h4>基础工程</h4><p>搭建 SpringBoot 基础工程，统一接口与项目结构，降低多人协作的返工成本。</p></div>
+          <div class="role-card"><h4>表达与验收</h4><p>负责项目介绍、演示视频与答辩，把复杂系统讲成评委和业务方能听懂的价值。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">03</span><h2>系统</h2></aside>
+      <div class="case-content">
+        <h3>四个核心模块，覆盖机构里最高频的事。</h3>
+        <p>
+          平台基于 SpringBoot + MyBatis-Plus 的前后端分离架构，整合 Redis、阿里云 OSS 与 AI 大模型问答。
+          模块划分遵循“先管人、再管服务、最后管知识”的顺序。
+        </p>
+        <div class="module-grid">
+          <div class="module"><span class="module__no">01 / RESIDENT</span><h4>老人信息与床位管理</h4><p>入住档案、床位状态、家属信息与基础标签，解决“人住在哪、谁负责”的第一层问题。</p></div>
+          <div class="module"><span class="module__no">02 / CARE</span><h4>护理项目与计划管理</h4><p>把护理项目、执行频次、责任人与记录串起来，让护理过程可追踪、可交接。</p></div>
+          <div class="module"><span class="module__no">03 / HEALTH</span><h4>健康档案与预约探访</h4><p>健康记录、探访预约与家属沟通记录集中管理，减少重复询问与信息遗漏。</p></div>
+          <div class="module"><span class="module__no">04 / AI</span><h4>文件资源与 AI 问答</h4><p>制度与护理知识统一存储，通过 AI 问答提供检索、沟通辅助与运营分析入口。</p></div>
+        </div>
+
+        <h3>AI 能力不是“加一个聊天框”，而是嵌进业务流程。</h3>
+        <ul>
+          <li><strong>知识库检索：</strong>护理规范、制度文件、常见问题统一入库，护理人员用自然语言就能找到依据。</li>
+          <li><strong>家属沟通辅助：</strong>把专业术语转成家属听得懂的表达，降低重复解释成本，同时保留人工确认。</li>
+          <li><strong>运营数据分析：</strong>把床位、护理、探访等数据变成可提问的运营视图，帮助管理者发现异常。</li>
+        </ul>
+        <div class="case-pills">
+          <span>SpringBoot</span><span>MyBatis-Plus</span><span>Redis</span><span>阿里云 OSS</span><span>通义千问</span><span>AI Agent</span><span>Vue 3</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">04</span><h2>取舍</h2></aside>
+      <div class="case-content">
+        <h3>先让系统跑通，再让 AI 变聪明。</h3>
+        <div class="case-grid-2">
+          <div class="case-card">
+            <span class="case-card__label">TRADEOFF 01</span>
+            <h4>业务闭环优先于 AI 炫技</h4>
+            <p>如果护理记录本身不完整，再强的问答也没有可靠的知识来源。先把基础数据与流程做实，再接 AI。</p>
+          </div>
+          <div class="case-card">
+            <span class="case-card__label">TRADEOFF 02</span>
+            <h4>AI 给建议，人来确认</h4>
+            <p>养老场景容错率低。涉及健康与家属沟通的内容，AI 只做辅助生成，必须保留护理人员确认环节。</p>
+          </div>
+          <div class="case-card">
+            <span class="case-card__label">TRADEOFF 03</span>
+            <h4>统一入口，减少角色切换</h4>
+            <p>护理员、管理者、家属看到的是同一套数据的不同视图，而不是三套彼此不通的系统。</p>
+          </div>
+          <div class="case-card">
+            <span class="case-card__label">TRADEOFF 04</span>
+            <h4>文档与接口先行</h4>
+            <p>12 人协作最大的成本是返工。统一接口文档、命名与验收标准，比事后补测试更有效。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">05</span><h2>结果</h2></aside>
+      <div class="case-content">
+        <h3>从调研、设计、编码、测试到答辩，完整跑通一次。</h3>
+        <p>
+          项目完成了老人、床位、护理、预约等核心业务，以及文件存储与 AI 问答能力，
+          形成了可演示的系统与 2 分 32 秒的项目视频。对我而言，更大的收获是理解了“产品经理在技术团队里到底解决什么问题”。
+        </p>
+        <div class="case-kpis">
+          <div class="case-kpi"><strong>4</strong><span>核心管理模块</span></div>
+          <div class="case-kpi"><strong>12</strong><span>人跨职能团队</span></div>
+          <div class="case-kpi"><strong>3</strong><span>类 AI 应用场景</span></div>
+          <div class="case-kpi"><strong>2:32</strong><span>完整演示视频</span></div>
+        </div>
+        <div class="case-quote">“技术项目也需要产品经理：把业务语言翻译成系统语言，再把系统能力翻译回业务价值。”</div>
+        <h3>如果继续迭代，我会补上三件事。</h3>
+        <ul>
+          <li><strong>可观测性：</strong>为护理计划执行、异常预警、AI 回答满意度建立指标看板，而不是只看功能是否上线。</li>
+          <li><strong>权限与审计：</strong>细化到角色、字段与操作记录，满足养老场景对隐私与责任追溯的要求。</li>
+          <li><strong>知识库运营：</strong>建立“问答失败 → 知识缺口 → 内容补充”的闭环，让 AI 越用越准。</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="next-project">
+      <span>NEXT CASE / 03</span>
+      <a href="credit.html">信贷风控评分模型 →</a>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span>© 2026 宋若晗 · SONG RUOHAN</span>
+    <span>PLATFORM / AI AGENT / TEAM LEAD</span>
+    <a class="to-top" href="#caseMain">回到顶部</a>
+  </div>
+</footer>
+
+<div class="modal" id="videoModal" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle" aria-hidden="true">
+  <button class="modal__backdrop" type="button" data-modal-close aria-label="关闭视频"></button>
+  <div class="modal__dialog">
+    <div class="modal__bar">
+      <span class="modal__title" id="videoModalTitle">项目演示视频</span>
+      <button class="modal__close" type="button" data-modal-close aria-label="关闭">×</button>
+    </div>
+    <video id="projectVideo" controls playsinline preload="metadata" poster="../assets/img/elderly-poster.webp">
+      <source src="../assets/video/elderly-demo.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+<div class="modal" id="imageModal" role="dialog" aria-modal="true" aria-label="项目界面大图" aria-hidden="true">
+  <button class="modal__backdrop" type="button" data-modal-close aria-label="关闭图片"></button>
+  <div class="modal__dialog">
+    <div class="modal__bar">
+      <span class="modal__title" id="imageModalTitle">PROJECT SCREEN</span>
+      <button class="modal__close" type="button" data-modal-close aria-label="关闭">×</button>
+    </div>
+    <img class="lightbox-img" id="lightboxImage" src="" alt="">
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="../assets/app.js"></script>
+</body>
+</html>

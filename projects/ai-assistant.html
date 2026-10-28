@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 对话助手改版 · 产品实习案例 | 宋若晗作品集</title>
+<meta name="description" content="AI 对话助手改版案例：通过漏斗分析定位新手引导、长对话上下文与 Prompt 质量问题，搭建评估体系与快捷指令模板，有效 CTR +14%。">
+<meta name="theme-color" content="#f4f0e7">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+<noscript><style>[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
+
+</head>
+<body class="project-page">
+<a class="skip-link" href="#caseMain">跳到案例正文</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="nav-shell">
+    <div class="container nav">
+      <a class="brand" href="../index.html" aria-label="返回宋若晗作品集">
+        <span class="brand__mark">宋</span>
+        <span class="brand__text">
+          <span class="brand__name">宋若晗</span>
+          <span class="brand__sub">AI PRODUCT MANAGER</span>
+        </span>
+      </a>
+      <nav class="nav__links" aria-label="主导航">
+        <a class="nav__link" href="../index.html#work">项目</a>
+        <a class="nav__link" href="../index.html#capabilities">能力</a>
+        <a class="nav__link" href="../index.html#experience">经历</a>
+        <a class="nav__link" href="../index.html#contact">联系</a>
+      </nav>
+      <div class="nav__right">
+        <a class="btn btn--sm" href="../assets/resume-product.pdf" download>下载简历 <span aria-hidden="true">↓</span></a>
+        <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="../index.html#work">项目</a>
+  <a href="../index.html#capabilities">能力</a>
+  <a href="../index.html#experience">经历</a>
+  <a href="../index.html#contact">联系</a>
+  <a class="btn" href="../assets/resume-product.pdf" download>下载简历 PDF ↓</a>
+</div>
+
+<main id="caseMain">
+  <section class="case-hero">
+    <div class="container">
+      <div class="case-hero__top">
+        <a class="back-link" href="../index.html#work">返回全部项目</a>
+        <span class="case-hero__label">CASE 05 / INTERNSHIP / AI ASSISTANT</span>
+      </div>
+      <div class="case-hero__grid">
+        <h1>AI 对话助手<small>北京学佳澳软件科技 · 产品实习 / 对话体验与增长改版</small></h1>
+        <p class="case-hero__summary">
+          DAU 与付费转化增长乏力，表面的问题是“模型不够好”，真正的问题却藏在使用路径里：
+          新手不会用、长对话上下文丢失、Prompt 质量参差。我从漏斗和数据出发，
+          用<strong>产品手段</strong>而不是只靠算法，把这三个问题逐个拆开。
+        </p>
+      </div>
+      <dl class="case-meta">
+        <div><dt>ROLE</dt><dd>产品实习 / 对话体验与增长</dd></div>
+        <div><dt>TIMELINE</dt><dd>2025.07 — 2025.09</dd></div>
+        <div><dt>METHOD</dt><dd>漏斗分析 · Prompt 评估 · 版本复盘</dd></div>
+        <div><dt>RESULT</dt><dd>CTR +14% · 会话量 +26% · 留存 +9%</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <div class="container case-body">
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">01</span><h2>问题</h2></aside>
+      <div class="case-content">
+        <h3>用户不是不愿意用，而是不知道“该怎么用”。</h3>
+        <p>
+          我先把对话产品的链路拆成“进入 → 首次提问 → 多轮对话 → 完成任务 → 付费/复访”，
+          再结合留存、会话与转化数据定位流失点。问题最终收敛到三个根因：
+        </p>
+        <div class="case-grid-2">
+          <div class="case-card">
+            <span class="case-card__label">ROOT CAUSE 01</span>
+            <h4>新手没有可模仿的起点</h4>
+            <p>空白输入框让用户不知道能问什么，首次提问质量低，第一轮就流失。</p>
+          </div>
+          <div class="case-card">
+            <span class="case-card__label">ROOT CAUSE 02</span>
+            <h4>长对话上下文丢失</h4>
+            <p>多轮之后模型忘记前文，用户需要反复补充背景，体验断裂，任务完成率下降。</p>
+          </div>
+          <div class="case-card">
+            <span class="case-card__label">ROOT CAUSE 03</span>
+            <h4>Prompt 质量参差</h4>
+            <p>没有统一的输入结构与质量评估口径，同一个需求得到的回答质量不稳定。</p>
+          </div>
+          <div class="case-card">
+            <span class="case-card__label">ROOT CAUSE 04</span>
+            <h4>模型幻觉带来不信任</h4>
+            <p>回答看起来流畅但事实不可靠，用户一旦踩坑就很难再回来。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">02</span><h2>判断</h2></aside>
+      <div class="case-content">
+        <h3>产品层能解决的，不要都推给算法。</h3>
+        <p>
+          算法优化周期长、成本高，而用户的第一公里体验、上下文组织和输入结构，产品侧可以先做。
+          我的策略是：<strong>先用产品手段降低使用门槛，再建立可量化的评估体系，反向驱动算法迭代。</strong>
+        </p>
+        <div class="compare">
+          <div class="compare__col compare__col--before">
+            <span class="compare__label">BEFORE</span>
+            <h4>空白输入框 + 黑盒回答</h4>
+            <p>用户自由输入，系统直接给结果。没有示例、没有结构、没有质量反馈，体验依赖运气。</p>
+          </div>
+          <div class="compare__col compare__col--after">
+            <span class="compare__label">AFTER</span>
+            <h4>可上手 + 可评估 + 可迭代</h4>
+            <p>快捷指令降低第一步门槛，上下文策略保证多轮连续，评估体系让“回答好不好”可以被讨论和优化。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">03</span><h2>动作</h2></aside>
+      <div class="case-content">
+        <h3>四件事，把体验从“能用”推到“愿意用”。</h3>
+        <div class="module-grid">
+          <div class="module"><span class="module__no">01 / ONBOARDING</span><h4>新手前置引导与快捷指令</h4><p>把高频任务做成可直接点击的模板，用户不需要先学会“怎么问”。</p></div>
+          <div class="module"><span class="module__no">02 / CONTEXT</span><h4>重构对话上下文管理</h4><p>明确哪些信息需要保留、何时摘要、何时追问，减少长对话中的背景丢失。</p></div>
+          <div class="module"><span class="module__no">03 / EVAL</span><h4>Prompt 质量评估体系</h4><p>从完成率、有效 CTR、用户留存、回答可用性等维度建立可量化的评估口径。</p></div>
+          <div class="module"><span class="module__no">04 / DOC QA</span><h4>文档解析问答</h4><p>支持上传文档后直接提问，把“读长文”变成“问重点”，拓展高频使用场景。</p></div>
+        </div>
+        <p>
+          同时，我持续跟踪 DAU、会话完成率、转化漏斗与模型调用成本，避免“体验变好但成本失控”。
+          每次版本迭代都保留前后对比，形成可复盘的结论，而不是只汇报一个漂亮的增幅。
+        </p>
+      </div>
+    </section>
+
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">04</span><h2>结果</h2></aside>
+      <div class="case-content">
+        <h3>体验指标与业务指标同时改善。</h3>
+        <div class="case-kpis">
+          <div class="case-kpi"><strong>+14%</strong><span>对话有效 CTR</span></div>
+          <div class="case-kpi"><strong>+26%</strong><span>总会话量</span></div>
+          <div class="case-kpi"><strong>+22%</strong><span>周活</span></div>
+          <div class="case-kpi"><strong>+9%</strong><span>7 日留存</span></div>
+        </div>
+        <p>
+          快捷指令模板带动周活上涨 22%，7 日留存提升 9%。更重要的是，团队第一次有了统一的
+          “回答质量”讨论语言：哪些问题该被解决、哪些回答算合格、下一版优先改什么。
+        </p>
+        <div class="case-quote">“AI 产品的体验，不是模型一次回答的惊艳，而是用户第十次回来时仍然信任它。”</div>
+        <h3>如果再做一次，我会补上什么。</h3>
+        <ul>
+          <li><strong>分层评估：</strong>把“任务完成”拆成可用、准确、可信三层，避免只看 CTR 这类表层指标。</li>
+          <li><strong>成本前置：</strong>在方案阶段就定义 token 成本与响应时延的边界，而不是上线后再压缩。</li>
+          <li><strong>负反馈闭环：</strong>把用户点踩、改写、重复提问变成知识缺口与 Prompt 优化的输入。</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="next-project">
+      <span>NEXT CASE / 06</span>
+      <a href="data-asset.html">企业数据资产共享平台 →</a>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span>© 2026 宋若晗 · SONG RUOHAN</span>
+    <span>AI PRODUCT / GROWTH / CONVERSATION</span>
+    <a class="to-top" href="#caseMain">回到顶部</a>
+  </div>
+</footer>
+
+<div class="modal" id="imageModal" role="dialog" aria-modal="true" aria-label="项目界面大图" aria-hidden="true">
+  <button class="modal__backdrop" type="button" data-modal-close aria-label="关闭图片"></button>
+  <div class="modal__dialog">
+    <div class="modal__bar">
+      <span class="modal__title" id="imageModalTitle">PROJECT SCREEN</span>
+      <button class="modal__close" type="button" data-modal-close aria-label="关闭">×</button>
+    </div>
+    <img class="lightbox-img" id="lightboxImage" src="" alt="">
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="../assets/app.js"></script>
+</body>
+</html>

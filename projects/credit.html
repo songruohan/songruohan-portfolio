@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>信贷风控评分模型 · 数据分析与建模 | 宋若晗作品集</title>
+<meta name="description" content="信贷风控评分模型案例：95,938 条建模样本，201→60 特征筛选，LR / XGBoost / LightGBM 对比，OOT AUC 0.6686，完整数据分析与建模报告。">
+<meta name="theme-color" content="#f4f0e7">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+<noscript><style>[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
+
+</head>
+<body class="project-page">
+<a class="skip-link" href="#caseMain">跳到案例正文</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="nav-shell">
+    <div class="container nav">
+      <a class="brand" href="../index.html" aria-label="返回宋若晗作品集">
+        <span class="brand__mark">宋</span>
+        <span class="brand__text">
+          <span class="brand__name">宋若晗</span>
+          <span class="brand__sub">AI PRODUCT MANAGER</span>
+        </span>
+      </a>
+      <nav class="nav__links" aria-label="主导航">
+        <a class="nav__link" href="../index.html#work">项目</a>
+        <a class="nav__link" href="../index.html#capabilities">能力</a>
+        <a class="nav__link" href="../index.html#experience">经历</a>
+        <a class="nav__link" href="../index.html#contact">联系</a>
+      </nav>
+      <div class="nav__right">
+        <a class="btn btn--sm" href="../assets/resume-data.pdf" download>下载数据简历 <span aria-hidden="true">↓</span></a>
+        <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="../index.html#work">项目</a>
+  <a href="../index.html#capabilities">能力</a>
+  <a href="../index.html#experience">经历</a>
+  <a href="../index.html#contact">联系</a>
+  <a class="btn" href="../assets/resume-data.pdf" download>下载数据简历 PDF ↓</a>
+</div>
+
+<main id="caseMain">
+  <section class="case-hero">
+    <div class="container">
+      <div class="case-hero__top">
+        <a class="back-link" href="../index.html#work">返回全部项目</a>
+        <span class="case-hero__label">CASE 03 / DATA / RISK MODEL</span>
+      </div>
+      <div class="case-hero__grid">
+        <h1>信贷风控<small>申请评分卡模型 · 特征分析、建模与 OOT 评估</small></h1>
+        <p class="case-hero__summary">
+          在弱信号、跨期漂移的信贷场景里，从 201 个原始特征中筛出 60 个，训练并比较
+          LR / XGBoost / LightGBM 三个模型。最终推荐 <strong>XGBoost</strong> 作为主模型：
+          OOT AUC 0.6686、KS 0.2831，分数 PSI 0.0709。
+        </p>
+      </div>
+      <dl class="case-meta">
+        <div><dt>ROLE</dt><dd>数据清洗 / 特征工程 / 建模评估</dd></div>
+        <div><dt>DATA</dt><dd>95,938 建模样本 · 201 个原始特征</dd></div>
+        <div><dt>MODELS</dt><dd>LR · XGBoost · LightGBM</dd></div>
+        <div><dt>OUTPUT</dt><dd>完整建模报告 · 7 个章节 · 9 张图表</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <div class="container case-body">
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">01</span><h2>问题</h2></aside>
+      <div class="case-content">
+        <h3>不是“模型能不能跑”，而是“这个模型敢不敢用”。</h3>
+        <p>
+          数据集来自授信申请与三方征信衍生特征，标签为 FPD30（首逾 30 天）。原始数据存在无标签样本、
+          特征缺失、单一值过高与跨期漂移等问题。真正困难的不是训练一个模型，而是判断它在未来样本上是否稳定。
+        </p>
+        <div class="case-kpis">
+          <div class="case-kpi"><strong>116,088</strong><span>原始主表记录</span></div>
+          <div class="case-kpi"><strong>95,938</strong><span>最终建模样本</span></div>
+          <div class="case-kpi"><strong>4.67%</strong><span>OOT 坏样本率</span></div>
+          <div class="case-kpi"><strong>0.033</strong><span>最高单特征 IV（弱信号）</span></div>
+        </div>
+        <div class="case-quote">“弱信号场景里，模型的价值不来自某个强特征，而来自稳定的特征组合和诚实的评估。”</div>
+      </div>
+    </section>
+
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">02</span><h2>过程</h2></aside>
+      <div class="case-content">
+        <h3>从数据到结论，每一步都留下可复查的口径。</h3>
+        <div class="flow">
+          <div class="flow__step"><small>01</small><h4>样本构建</h4><p>三表合并，剔除无标签与无特征记录，按时间划分 Train / Test / OOT。</p></div>
+          <div class="flow__step"><small>02</small><h4>单变量分析</h4><p>缺失率、单一值占比、IV、PSI，先识别低质量与高漂移特征。</p></div>
+          <div class="flow__step"><small>03</small><h4>特征筛选</h4><p>综合缺失率、IV、PSI、相关性与重要性，201 个特征保留 60 个。</p></div>
+          <div class="flow__step"><small>04</small><h4>模型训练</h4><p>LR 作为可解释基线，XGBoost / LightGBM 捕捉非线性关系。</p></div>
+          <div class="flow__step"><small>05</small><h4>双重评估</h4><p>用 AUC、KS 与分数 PSI 同时看区分度和跨期稳定性。</p></div>
+        </div>
+
+        <h3>特征筛选不是“删到最少”，而是“留下能解释、能监控的组合”。</h3>
+        <ul>
+          <li><strong>先清洗：</strong>缺失率 &gt; 50% 的特征 5 个，单一值占比 &gt; 0.95 的特征 23 个，优先剔除。</li>
+          <li><strong>再看预测力：</strong>IV &gt; 0.02 的特征仅 11 个，说明这是典型弱信号场景，不能指望单变量。</li>
+          <li><strong>同时看稳定性：</strong>9 个特征 PSI &gt; 0.25；高相关对 133 对，按重要性保留代表特征。</li>
+          <li><strong>保留可解释性：</strong>4 个高 IV 但 PSI 偏高的特征被保留，但明确要求上线后持续监控、必要时降权。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">03</span><h2>判断</h2></aside>
+      <div class="case-content">
+        <h3>为什么推荐 XGBoost，而不是只看训练集 AUC。</h3>
+        <div class="case-grid-2">
+          <div class="case-card">
+            <span class="case-card__label">LR / BASELINE</span>
+            <h4>最稳，但区分度有限</h4>
+            <p>OOT AUC 0.6521、KS 0.2607、PSI 0.0649。可解释性最好，适合作为对照与评分卡底座。</p>
+          </div>
+          <div class="case-card">
+            <span class="case-card__label">XGBOOST / MAIN</span>
+            <h4>综合区分度与稳定性最优</h4>
+            <p>OOT AUC 0.6686、KS 0.2831、PSI 0.0709。训练集到验证集存在一定过拟合，但 OOT 表现仍稳健。</p>
+          </div>
+          <div class="case-card">
+            <span class="case-card__label">LIGHTGBM / ALT</span>
+            <h4>接近 XGB，可作为备选</h4>
+            <p>OOT AUC 0.6649、KS 0.2732、PSI 0.0769。三者 OOT 表现接近，说明结论不是单一模型偶然。</p>
+          </div>
+          <div class="case-card">
+            <span class="case-card__label">MONITORING</span>
+            <h4>模型上线不是终点</h4>
+            <p>三个模型的分数 PSI 均 &lt; 0.1，具备上线基础；仍需按月做滚动 PSI、迁移率与坏账监控。</p>
+          </div>
+        </div>
+        <div class="case-quote">“如果只汇报训练集 AUC，模型会看起来很聪明；用 OOT 评估，才知道它是否值得信任。”</div>
+      </div>
+    </section>
+
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">04</span><h2>结论</h2></aside>
+      <div class="case-content">
+        <h3>一份能支撑上线讨论的建模报告。</h3>
+        <p>
+          报告覆盖数据概览、缺失率、IV / PSI、特征重要性、特征筛选、模型评估与结论建议七个部分，
+          所有图表与指标都可以回到原始口径复查。最终结论是：XGBoost 作为主模型，LR 作为可解释备选；
+          上线前重点监控高 IV 但 PSI 偏高的特征。
+        </p>
+        <h3>我也清楚这个模型的边界。</h3>
+        <ul>
+          <li><strong>信号弱：</strong>最高 IV 仅 0.033，AUC 上限受特征质量限制，继续调参的收益有限。</li>
+          <li><strong>有过拟合：</strong>XGB 训练集 AUC 0.7147、验证集 0.6288，需要更强的正则与跨期验证。</li>
+          <li><strong>未上线：</strong>这是建模与分析项目，结论是“具备上线基础”，不是“已经产生业务收益”。</li>
+          <li><strong>下一步：</strong>补外部征信与行为类强特征，对 LR 做 WOE 分箱与评分刻度，建立按月滚动监控。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="case-section">
+      <aside class="case-section__side"><span class="case-section__no">05</span><h2>完整报告</h2></aside>
+      <div class="case-content">
+        <h3>交互式数据报告</h3>
+        <p>以下为原始 HTML 报告的完整嵌入，包含可交互图表。也可以在新窗口中全屏阅读。</p>
+        <div class="report-frame">
+          <div class="report-frame__bar">
+            <span>credit-risk-report.html / 95,938 samples</span>
+            <a href="../reports/credit.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
+          </div>
+          <iframe title="信贷风控评分模型分析报告" data-src="../reports/credit.html" loading="lazy"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <div class="next-project">
+      <span>NEXT CASE / 04</span>
+      <a href="starbucks.html">星巴克门店数据分析 →</a>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span>© 2026 宋若晗 · SONG RUOHAN</span>
+    <span>DATA / RISK / MODEL EVALUATION</span>
+    <a class="to-top" href="#caseMain">回到顶部</a>
+  </div>
+</footer>
+
+<div class="modal" id="imageModal" role="dialog" aria-modal="true" aria-label="项目界面大图" aria-hidden="true">
+  <button class="modal__backdrop" type="button" data-modal-close aria-label="关闭图片"></button>
+  <div class="modal__dialog">
+    <div class="modal__bar">
+      <span class="modal__title" id="imageModalTitle">PROJECT SCREEN</span>
+      <button class="modal__close" type="button" data-modal-close aria-label="关闭">×</button>
+    </div>
+    <img class="lightbox-img" id="lightboxImage" src="" alt="">
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="../assets/app.js"></script>
+</body>
+</html>

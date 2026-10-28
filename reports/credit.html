@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>信贷风控评分模型 · 数据分析与建模报告</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B1220'/><path d='M20 70 L42 40 L56 55 L78 25' stroke='%232DD4BF' stroke-width='8' fill='none' stroke-linecap='round'/><circle cx='78' cy='25' r='6' fill='%232DD4BF'/></svg>">
+<style>
+:root{--bg:#0B1220;--panel:#111B2E;--panel2:#0E1728;--line:#1E2B45;--txt:#E6EDF7;--mut:#8FA3BD;
+--acc:#2DD4BF;--acc2:#38BDF8;--warn:#F0A94D;--bad:#F0656A;--ok:#3BB273;--grid:#1E2B45}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;
+line-height:1.7;font-size:15px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px;width:100%;min-width:0}
+/* ===== hero ===== */
+.hero{position:relative;padding:72px 0 56px;border-bottom:1px solid var(--line);
+background:radial-gradient(1200px 400px at 70% -10%,rgba(56,189,248,.14),transparent 60%),
+radial-gradient(900px 380px at 10% 0%,rgba(45,212,191,.10),transparent 55%)}
+.hero .wrap{position:relative}
+.tag{display:inline-flex;align-items:center;gap:8px;color:var(--acc);font-size:12.5px;letter-spacing:2px;
+text-transform:uppercase;border:1px solid rgba(45,212,191,.35);padding:5px 12px;border-radius:999px;margin-bottom:22px}
+.tag i{width:6px;height:6px;background:var(--acc);border-radius:50%}
+h1.title{font-size:34px;line-height:1.3;font-weight:700;letter-spacing:.5px;margin-bottom:12px}
+.subtitle{color:var(--mut);font-size:16px;max-width:760px;margin-bottom:30px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px}
+.kpi{background:linear-gradient(180deg,rgba(56,189,248,.07),rgba(17,27,46,.4));border:1px solid var(--line);
+border-radius:14px;padding:18px 18px 16px}
+.kpi .n{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.kpi .n.acc{color:var(--acc)}.kpi .n.acc2{color:var(--acc2)}
+.kpi .l{font-size:12.5px;color:var(--mut);margin-top:4px}
+/* ===== nav ===== */
+nav{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.92);backdrop-filter:blur(8px);
+border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:26px;overflow-x:auto;padding:0 28px;height:52px;align-items:center}
+nav a{color:var(--mut);font-size:13.5px;text-decoration:none;white-space:nowrap;transition:color .2s}
+nav a:hover,nav a.on{color:var(--acc)}
+/* ===== sections ===== */
+section{padding:56px 0;border-bottom:1px solid var(--line)}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:30px}
+.sec-no{color:var(--acc);font-size:13px;letter-spacing:2px;font-weight:700;white-space:nowrap}
+.sec-title{font-size:23px;font-weight:700}
+.sec-desc{color:var(--mut);font-size:14px;margin-top:6px}
+h4{font-size:16px;font-weight:600;margin:30px 0 14px;display:flex;align-items:center;gap:8px}
+h4::before{content:"";width:4px;height:16px;background:var(--acc);border-radius:2px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.chart{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:10px}
+.chart .t{font-size:13px;color:var(--mut);margin-bottom:8px}
+.chartbox{width:100%;height:330px}
+/* ===== table ===== */
+.tbl-wrap{overflow-x:auto;margin-top:10px;-webkit-overflow-scrolling:touch;max-width:100%;min-width:0}
+.tbl-wrap table{margin-top:0}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:center}
+th{background:var(--panel2);color:var(--acc2);font-weight:600;letter-spacing:.5px}
+td{font-variant-numeric:tabular-nums}
+tr:nth-child(even) td{background:rgba(30,43,69,.25)}
+.hl{color:var(--acc);font-weight:700}
+.okc{color:var(--ok)}.warnc{color:var(--warn)}.badc{color:var(--bad)}
+/* ===== callout ===== */
+.co{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);
+border-radius:10px;padding:16px 18px;margin:20px 0;font-size:14px;color:var(--txt)}
+.co.warn{border-left-color:var(--warn)}
+.co .co-t{font-weight:700;margin-bottom:6px;color:var(--acc)}
+.co.warn .co-t{color:var(--warn)}
+.co ul{padding-left:20px;margin-top:4px}
+.co li{margin:3px 0;color:var(--mut)}
+/* ===== funnel ===== */
+.funnel{display:flex;flex-direction:column;gap:8px;margin:18px 0}
+.fn{display:flex;align-items:center;gap:14px}
+.fn .bar{height:44px;border-radius:8px;background:linear-gradient(90deg,#16345e,#2dd4bf);
+display:flex;align-items:center;color:#fff;font-weight:700;font-size:14px;padding-left:16px;
+white-space:nowrap;overflow:hidden;min-width:110px}
+.fn .lab{color:var(--mut);font-size:13px;width:220px;flex-shrink:0}
+.fn .cnt{font-size:13.5px;font-weight:600;min-width:60px}
+/* ===== list chips ===== */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:4px 12px;
+font-size:12.5px;color:var(--mut);font-variant-numeric:tabular-nums}
+.chip b{color:var(--acc2)}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.pill.g{background:rgba(59,178,115,.15);color:var(--ok)}
+.pill.y{background:rgba(240,169,77,.15);color:var(--warn)}
+.pill.r{background:rgba(240,101,106,.15);color:var(--bad)}
+/* ===== footer ===== */
+footer{padding:40px 0 60px;color:var(--mut);font-size:12.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+@media(max-width:768px){
+ .kpis{grid-template-columns:repeat(2,1fr)}
+ .grid2{grid-template-columns:1fr}
+ h1.title{font-size:26px}
+ .hero{padding:48px 0 40px}
+ section{padding:42px 0}
+ .fn .lab{width:150px}
+ table{font-size:12px;min-width:0}
+ th,td{padding:6px 8px;white-space:normal}
+ .tbl-wrap{overflow-x:auto}
+}
+</style>
+</head>
+<body>
+<div class="hero"><div class="wrap">
+  <div class="tag"><i></i>信贷风控 · 申请评分卡 · 数据建模报告</div>
+  <h1 class="title">申请信用评分模型<br>特征分析 · 建模 · 评估全流程</h1>
+  <div class="subtitle">基于用户授信申请数据与三方征信衍生特征（blzvar / blzVaR），完成缺失率、IV、PSI、特征重要性分析，经特征筛选后训练 Logistic Regression / XGBoost / LightGBM 三个模型，并以 AUC、KS、PSI 完成训练集与 OOT 双重评估。</div>
+  <div class="kpis">
+    <div class="kpi"><div class="n acc">95,938</div><div class="l">建模样本（含标签+特征）</div></div>
+    <div class="kpi"><div class="n acc2">201 → 60</div><div class="l">特征筛选（201→60）</div></div>
+    <div class="kpi"><div class="n">4.67%</div><div class="l">OOT 坏样本率 fpd30</div></div>
+    <div class="kpi"><div class="n acc">0.6686</div><div class="l">最佳模型 OOT AUC（XGB）</div></div>
+  </div>
+</div></div>
+
+<nav><div class="wrap">
+  <a href="#s1">数据概览</a><a href="#s2">单变量分析</a><a href="#s3">IV 与 PSI</a>
+  <a href="#s4">特征重要性</a><a href="#s5">特征筛选</a><a href="#s6">模型评估</a><a href="#s7">结论建议</a>
+</div></nav>
+
+<!-- ================= 01 数据概览 ================= -->
+<section id="s1"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">01</div><div><div class="sec-title">数据与样本概览</div>
+  <div class="sec-desc">数据源：三张表合并，标签为 FPD30 逾期标志</div></div></div>
+  <div class="grid2">
+    <div>
+      <h4>样本构建</h4>
+      <div class="tbl-wrap"><table>
+        <tr><th style="text-align:left">环节</th><th>记录数</th><th>说明</th></tr>
+        <tr><td style="text-align:left">主表总记录</td><td>116,088</td><td>dataNew_fpd30</td></tr>
+        <tr><td style="text-align:left">剔除无标签（other）</td><td>− 9,279</td><td class="mut">无 FPD30 标签</td></tr>
+        <tr><td style="text-align:left">剔除无特征行</td><td>− 10,871</td><td class="mut">未匹配到特征表</td></tr>
+        <tr><td style="text-align:left" class="hl">建模样本</td><td class="hl">95,938</td><td class="hl">含标签+特征</td></tr>
+      </table></div>
+      <h4>数据集划分</h4>
+      <div class="tbl-wrap"><table>
+        <tr><th style="text-align:left">数据集</th><th>样本</th><th>坏样本</th><th>坏样本率</th></tr>
+        <tr><td style="text-align:left">Train（训练）</td><td>69,326</td><td>4,242</td><td>5.47%</td></tr>
+        <tr><td style="text-align:left">Test（验证）</td><td>17,269</td><td>1,029</td><td>5.34%</td></tr>
+        <tr><td style="text-align:left">OOT（时间外）</td><td>9,343</td><td>524</td><td>4.67%</td></tr>
+      </table></div>
+    </div>
+    <div>
+      <h4>字段构成</h4>
+      <div class="chips">
+        <span class="chip">主键：<b>phone_no / id_no / apply_time</b></span>
+        <span class="chip">标签：<b>fpd30_flag</b>（首逾30天）</span>
+        <span class="chip">时间：<b>2025-08 ~ 2026-05</b></span>
+      </div>
+      <h4>原始特征池</h4>
+      <div class="co">
+        <div class="co-t">特征规模</div>
+        <ul>
+          <li>D10 特征表：88 个 blzvar 特征</li>
+          <li>D14 特征表：113 个 blzVaR 特征</li>
+          <li>合并后原始特征共 <b>201 个</b></li>
+        </ul>
+      </div>
+      <div class="co warn"><div class="co-t">建模口径说明</div>
+        <ul>
+          <li>OOT 为时间外样本，用于检验模型跨期稳定性</li>
+          <li>其他（other）样本无逾期标签，不参与建模</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ================= 02 单变量分析 ================= -->
+<section id="s2"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">02</div><div><div class="sec-title">单变量分析：缺失率与单一值占比</div>
+  <div class="sec-desc">识别低质量、无信息量的特征，为特征筛选提供依据</div></div></div>
+  <div class="co">
+    <div class="co-t">特征质量总体情况（201 个原始特征）</div>
+    <ul>
+      <li>缺失率 &gt; 50% 的特征：<b>5 个</b>（blzvar9018 缺失率高达 81.8%）</li>
+      <li>缺失率 &gt; 10% 的特征：<b>18 个</b></li>
+      <li>单一值占比 &gt; 0.95 的特征：<b>23 个</b>（几乎无区分度，属于常量型特征）</li>
+      <li>单一值占比 &gt; 0.9 的特征：<b>40 个</b></li>
+    </ul>
+  </div>
+  <div class="chart"><div class="t">缺失率最高的 12 个特征（blzvar 系衍生变量）</div><div id="c_miss" class="chartbox"></div></div>
+</div></section>
+
+<!-- ================= 03 IV & PSI ================= -->
+<section id="s3"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">03</div><div><div class="sec-title">预测力（IV）与稳定性（PSI）</div>
+  <div class="sec-desc">IV 衡量特征对违约的区分能力，PSI 衡量特征在训练集与 OOT 间的分布漂移</div></div></div>
+  <div class="grid2">
+    <div class="chart"><div class="t">Top15 特征 IV 值（对 fpd30 的区分力）</div><div id="c_iv" class="chartbox"></div></div>
+    <div class="chart"><div class="t">Top10 特征 PSI（Train vs OOT 分布漂移）</div><div id="c_psi" class="chartbox"></div></div>
+  </div>
+  <div class="co">
+    <div class="co-t">IV 与 PSI 解读</div>
+    <ul>
+      <li><b>IV 整体偏低</b>：最大 IV 仅 0.033（blzvar9053），IV&gt;0.02 的特征仅 11 个，属典型弱信号信贷场景，单一特征预测力有限，依赖多特征集成。</li>
+      <li><b>PSI 不稳定特征</b>：blzVaR3110（PSI=1.69）、blzVaR3111（PSI=1.24）、blzvar9026（PSI=0.68）等 9 个特征 PSI&gt;0.25，跨期漂移严重，需在筛选阶段剔除或降权。</li>
+      <li>稳定性与预测力并非完全一致：部分高 IV 特征（如 blzVaR3112）PSI 亦偏高，需权衡。</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- ================= 04 特征重要性 ================= -->
+<section id="s4"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">04</div><div><div class="sec-title">特征重要性</div>
+  <div class="sec-desc">从 LR 系数、XGBoost / LightGBM 增益三个视角观察特征贡献</div></div></div>
+  <div class="grid2">
+    <div class="chart"><div class="t">XGBoost 特征重要性（相对增益 %）</div><div id="c_imp_xgb" class="chartbox"></div></div>
+    <div class="chart"><div class="t">LightGBM 特征重要性（增益）</div><div id="c_imp_lgb" class="chartbox"></div></div>
+    <div class="chart" style="grid-column:1/-1"><div class="t">LR 标准化系数绝对值 Top10（线性视角）</div><div id="c_imp_lr" class="chartbox"></div></div>
+  </div>
+  <div class="co"><div class="co-t">特征重要性共识</div>
+    <ul><li>blzvar9033、blzvar9065、blzvar9071、blzvar9084、blzVaR3112 在多个模型中均靠前，为稳健的核心特征。</li>
+    <li>树模型与线性模型对特征重要性的判定存在差异，反映特征间非线性关系的存在。</li></ul>
+  </div>
+</div></section>
+
+<!-- ================= 05 特征筛选 ================= -->
+<section id="s5"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">05</div><div><div class="sec-title">特征筛选</div>
+  <div class="sec-desc">综合缺失率、单一值、IV、PSI、相关性与重要性的多准则筛选</div></div></div>
+  <div class="funnel">
+    <div class="fn"><div class="lab">原始特征池</div><div class="bar" style="width:100%">201</div><div class="cnt">100%</div></div>
+    <div class="fn"><div class="lab">剔除单一值占比 &gt; 0.99</div><div class="bar" style="width:97%">195</div><div class="cnt">− 6</div></div>
+    <div class="fn"><div class="lab">剔除 IV &lt; 0.005（低区分度）</div><div class="bar" style="width:49.3%">99</div><div class="cnt">− 96</div></div>
+    <div class="fn"><div class="lab">剔除高 PSI + 低重要性</div><div class="bar" style="width:48.8%">98</div><div class="cnt">− 1</div></div>
+    <div class="fn"><div class="lab">相关性去冗余（|r|≥0.8）</div><div class="bar" style="width:29.9%">60</div><div class="cnt">− 38</div></div>
+  </div>
+  <div class="co">
+    <div class="co-t">筛选结果要点</div>
+    <ul>
+      <li>最终保留 <b>60 个特征</b>，单变量 IV 全部 ≥ 0.005，缺失率 &gt; 50% 仅 2 个。</li>
+      <li>高相关对（|r|≥0.8）共 133 对，去冗余时按重要性保留代表特征，降低共线性。</li>
+      <li>保留特征中仍有 4 个 PSI&gt;0.25（如 blzVaR3112、blzvar9033），因预测力突出予以保留，后续以整体分数 PSI 监控。</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- ================= 06 模型评估 ================= -->
+<section id="s6"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">06</div><div><div class="sec-title">模型训练与评估</div>
+  <div class="sec-desc">LR / XGBoost / LightGBM 三模型在 Train / Test / OOT 上的 AUC、KS，及分数 PSI</div></div></div>
+  <h4>模型效果总表</h4>
+  <div class="tbl-wrap"><table>
+    <tr><th>模型</th><th>Train AUC / KS</th><th>Test AUC / KS</th><th>OOT AUC / KS</th><th>Train→OOT PSI</th></tr>
+    <tr><td>Logistic Regression</td><td>0.6178 / 0.1705</td><td>0.6090 / 0.1572</td><td>0.6521 / 0.2607</td><td class="okc">0.0649</td></tr>
+    <tr><td>XGBoost</td><td>0.7147 / 0.3026</td><td>0.6288 / 0.1851</td><td class="hl">0.6686 / 0.2831</td><td class="okc">0.0709</td></tr>
+    <tr><td>LightGBM</td><td>0.7072 / 0.2921</td><td>0.6298 / 0.1941</td><td>0.6649 / 0.2732</td><td class="okc">0.0769</td></tr>
+  </table></div>
+  <div class="grid2">
+    <div class="chart"><div class="t">OOT 数据集 ROC 曲线对比</div><div id="c_roc" class="chartbox"></div></div>
+    <div class="chart"><div class="t">XGBoost 在 OOT 上的 KS 曲线</div><div id="c_ks" class="chartbox"></div></div>
+  </div>
+  <h4>分数分布与 PSI（Train vs OOT）</h4>
+  <div class="grid2">
+    <div class="chart"><div class="t">LR 分数分布 · PSI=0.065</div><div id="c_d_lr" class="chartbox"></div></div>
+    <div class="chart"><div class="t">XGBoost 分数分布 · PSI=0.071</div><div id="c_d_xgb" class="chartbox"></div></div>
+  </div>
+  <div class="co"><div class="co-t">模型评估结论</div>
+    <ul>
+      <li><b>区分度（OOT）</b>：XGBoost 最优（AUC 0.6686，KS 0.2831），LightGBM 次之，LR 略低；三者 OOT 表现均显著优于随机（AUC&gt;0.65）。</li>
+      <li><b>稳定性（PSI）</b>：三模型 Train→OOT 分数 PSI 均 &lt; 0.1，跨期稳定，无显著漂移；LR 最稳（0.065）。</li>
+      <li><b>过拟合控制</b>：XGB / LGB 训练集 AUC（~0.71）高于验证集（~0.63），存在一定过拟合，但 OOT 仍稳健；LR 训练-验证差距最小。</li>
+      <li>综合区分度与稳定性，<b>XGBoost 为推荐主模型</b>，LR 可作为解释性强的备选/对照模型。</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- ================= 07 结论建议 ================= -->
+<section id="s7"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">07</div><div><div class="sec-title">结论与建议</div></div></div>
+  <div class="co"><div class="co-t">核心结论</div>
+    <ul>
+      <li>201 个原始特征经多准则筛选后保留 60 个，弱信号场景下集成模型可将 OOT AUC 提升至 <b>0.6686</b>。</li>
+      <li>三模型 OOT 区分度接近（AUC 0.65–0.67），XGBoost 综合最优且稳定。</li>
+      <li>特征跨期稳定（分数 PSI &lt;0.1），模型具备上线基础。</li>
+    </ul>
+  </div>
+  <div class="co warn"><div class="co-t">后续建议</div>
+    <ul>
+      <li>上线前对 blzVaR3112、blzvar9033 等高 IV 但 PSI 偏高的特征建立持续监控，必要时降权。</li>
+      <li>对 LR 模型可进一步做 WOE 分箱 / 评分卡刻度（Standard Scorecard）以提升可解释性与线性区分度。</li>
+      <li>建议引入更多强信号特征（外部征信、行为类）提升整体区分度上限。</li>
+      <li>补充按月分桶的滚动 PSI / 迁移率监控，作为贷后预警。</li>
+    </ul>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div>信贷风控 · 申请信用评分模型分析报告</div>
+  <div>建模样本 95,938 · 特征 201→60 · 模型 LR / XGB / LGB</div>
+</div></footer>
+
+<script src="../assets/vendor/echarts.min.js"></script>
+<script>
+
+const ROC_LR={"fpr": [0.0, 0.0075, 0.0171, 0.0296, 0.0402, 0.0457, 0.0637, 0.077, 0.0932, 0.1104, 0.1336, 0.1602, 0.1835, 0.2247, 0.2625, 0.2966, 0.3476, 0.3742, 0.423, 0.4833, 0.5279, 0.5731, 0.6221, 0.6816, 0.7281, 0.775, 0.8575, 0.8862, 0.9302, 1.0], "tpr": [0.0, 0.0413, 0.0826, 0.1216, 0.1606, 0.1995, 0.2317, 0.2661, 0.3005, 0.3349, 0.3693, 0.4014, 0.4358, 0.4679, 0.5, 0.5344, 0.5665, 0.6032, 0.6353, 0.6674, 0.7018, 0.7339, 0.7661, 0.7982, 0.8326, 0.8693, 0.9014, 0.9335, 0.9656, 1.0], "auc": 0.6521}; const ROC_XGB={"fpr": [0.0, 0.0038, 0.0102, 0.0209, 0.0308, 0.0411, 0.0588, 0.0702, 0.0873, 0.1091, 0.1342, 0.1579, 0.1832, 0.1977, 0.2437, 0.2702, 0.3206, 0.3552, 0.4065, 0.4575, 0.5152, 0.5645, 0.6172, 0.6685, 0.7185, 0.7602, 0.8107, 0.8868, 0.9416, 1.0], "tpr": [0.0, 0.0482, 0.0894, 0.1239, 0.1606, 0.1995, 0.2385, 0.2729, 0.3073, 0.3417, 0.3739, 0.406, 0.445, 0.4771, 0.5092, 0.5459, 0.5826, 0.6147, 0.6468, 0.6766, 0.7087, 0.7454, 0.7752, 0.805, 0.8394, 0.8716, 0.9014, 0.9335, 0.9679, 1.0], "auc": 0.6686}; const ROC_LGB={"fpr": [0.0, 0.0043, 0.0113, 0.0202, 0.0335, 0.0481, 0.0598, 0.0761, 0.0931, 0.1188, 0.1375, 0.1635, 0.1869, 0.2022, 0.2314, 0.2706, 0.3009, 0.3514, 0.3997, 0.4507, 0.4993, 0.5557, 0.6101, 0.6585, 0.7197, 0.7592, 0.8, 0.8921, 0.945, 1.0], "tpr": [0.0, 0.0528, 0.094, 0.1307, 0.1651, 0.1995, 0.2317, 0.2638, 0.3005, 0.3417, 0.3739, 0.406, 0.4381, 0.4702, 0.5046, 0.5367, 0.5688, 0.6009, 0.6353, 0.6674, 0.6972, 0.7339, 0.7661, 0.8005, 0.8326, 0.867, 0.8991, 0.9335, 0.9656, 1.0], "auc": 0.6649}; const KS={"fpr": [0.0, 0.0026, 0.0063, 0.0117, 0.0209, 0.0273, 0.0363, 0.0485, 0.0588, 0.0657, 0.0735, 0.0897, 0.108, 0.1296, 0.146, 0.1618, 0.1824, 0.1911, 0.2099, 0.2442, 0.2677, 0.3008, 0.3303, 0.3568, 0.4042, 0.4458, 0.4766, 0.519, 0.56, 0.5914, 0.631, 0.6685, 0.7016, 0.7423, 0.7652, 0.8107, 0.8763, 0.9133, 0.9619, 1.0], "tpr": [0.0, 0.0413, 0.0665, 0.0986, 0.1239, 0.1514, 0.1789, 0.211, 0.2362, 0.2615, 0.2867, 0.3142, 0.3394, 0.3624, 0.3876, 0.4106, 0.4404, 0.4656, 0.4885, 0.5138, 0.5436, 0.5688, 0.594, 0.617, 0.6422, 0.6674, 0.6858, 0.711, 0.7385, 0.7638, 0.7844, 0.8073, 0.8326, 0.8555, 0.8784, 0.9014, 0.9266, 0.9495, 0.9748, 1.0], "ks": 0.2831, "xgb_oot_auc": 0.6686}; const DIST={"LR": {"train": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], "oot": [0.0857, 0.0816, 0.0863, 0.0865, 0.0898, 0.0852, 0.0869, 0.0987, 0.1206, 0.1787], "psi": 0.0649}, "XGB": {"train": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], "oot": [0.0734, 0.0783, 0.0861, 0.0905, 0.0919, 0.0848, 0.0979, 0.1017, 0.1129, 0.1823], "psi": 0.0707}, "LGB": {"train": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], "oot": [0.0697, 0.0764, 0.0838, 0.0858, 0.092, 0.0941, 0.0945, 0.1006, 0.1208, 0.1822], "psi": 0.0769}};
+const IV_TOP=[{"name": "blzvar9053", "value": 0.0326}, {"name": "blzVaR3112", "value": 0.0284}, {"name": "blzvar9031", "value": 0.0273}, {"name": "blzvar9065", "value": 0.0263}, {"name": "blzVaR3090", "value": 0.0233}, {"name": "blzvar9045", "value": 0.0223}, {"name": "blzvar9046", "value": 0.0223}, {"name": "blzVaR3072", "value": 0.0215}, {"name": "blzvar9018", "value": 0.0211}, {"name": "blzvar9047", "value": 0.0204}, {"name": "blzVaR3084", "value": 0.02}, {"name": "blzVaR3111", "value": 0.02}, {"name": "blzvar9048", "value": 0.0199}, {"name": "blzVaR3075", "value": 0.0198}, {"name": "blzvar9044", "value": 0.0194}];
+const PSI_TOP=[{"name": "blzVaR3110", "value": 1.693}, {"name": "blzVaR3111", "value": 1.241}, {"name": "blzvar9026", "value": 0.684}, {"name": "blzvar9033", "value": 0.676}, {"name": "blzvar9029", "value": 0.485}, {"name": "blzVaR3112", "value": 0.327}, {"name": "blzvar9027", "value": 0.31}, {"name": "blzvar9030", "value": 0.291}, {"name": "blzvar9032", "value": 0.279}, {"name": "blzVaR3003", "value": 0.219}];
+const MISS_TOP=[{"name": "blzvar9018", "value": 0.818}, {"name": "blzvar9069", "value": 0.656}, {"name": "blzvar9072", "value": 0.656}, {"name": "blzvar9067", "value": 0.56}, {"name": "blzvar9075", "value": 0.537}, {"name": "blzvar9086", "value": 0.497}, {"name": "blzvar9081", "value": 0.434}, {"name": "blzvar9087", "value": 0.433}, {"name": "blzvar9019", "value": 0.425}, {"name": "blzvar9070", "value": 0.403}, {"name": "blzvar9068", "value": 0.388}, {"name": "blzvar9079", "value": 0.355}];
+const IMP_LR=[{"name": "blzvar9033", "value": 0.165}, {"name": "blzVaR3091", "value": 0.141}, {"name": "blzvar9084", "value": 0.114}, {"name": "blzvar9071", "value": 0.1}, {"name": "blzvar9065", "value": 0.098}, {"name": "blzVaR3112", "value": 0.09}, {"name": "blzVaR3111", "value": 0.085}, {"name": "blzvar9053", "value": 0.074}, {"name": "blzvar9087", "value": 0.074}, {"name": "blzVaR3066", "value": 0.068}];
+const IMP_XGB=[{"name": "blzVaR3112", "value": 100.0}, {"name": "blzvar9065", "value": 83.2}, {"name": "blzvar9071", "value": 81.4}, {"name": "blzVaR3066", "value": 73.1}, {"name": "blzvar9084", "value": 66.3}, {"name": "blzvar9060", "value": 63.8}, {"name": "blzvar9031", "value": 58.9}, {"name": "blzVaR3092", "value": 56.9}, {"name": "blzvar9061", "value": 53.8}, {"name": "blzVaR3067", "value": 53.3}, {"name": "blzvar9035", "value": 51.5}, {"name": "blzVaR3090", "value": 50.8}];
+const IMP_LGB=[{"name": "blzvar9033", "value": 95}, {"name": "blzvar9087", "value": 56}, {"name": "blzvar9053", "value": 51}, {"name": "blzvar9071", "value": 50}, {"name": "blzvar9031", "value": 48}, {"name": "blzvar9065", "value": 46}, {"name": "blzvar9057", "value": 40}, {"name": "blzvar9055", "value": 39}, {"name": "blzvar9061", "value": 37}, {"name": "blzvar9069", "value": 37}];
+
+const PAL=['#2DD4BF','#38BDF8','#F0A94D','#7C9BD9'];
+const AX={axisLine:{lineStyle:{color:'#2A3A5C'}},axisLabel:{color:'#8FA3BD',fontSize:11},
+splitLine:{lineStyle:{color:'rgba(30,43,69,.5)'}}};
+const GRID={left:52,right:18,top:30,bottom:36};
+function mk(el,opt){const c=echarts.init(document.getElementById(el));c.setOption(opt);return c}
+
+/* 缺失率 */
+mk('c_miss',{grid:{left:120,right:30,top:16,bottom:30},tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+ xAxis:{type:'value',axisLabel:{color:'#8FA3BD',formatter:'{value}'},splitLine:{lineStyle:{color:'rgba(30,43,69,.5)'}}},
+ yAxis:{type:'category',data:MISS_TOP.map(d=>d.name),axisLabel:{color:'#8FA3BD',fontSize:11}},
+ series:[{type:'bar',data:MISS_TOP.map(d=>({value:d.value,itemStyle:{color:'#38BDF8'}})),barWidth:14,
+  label:{show:true,position:'right',formatter:p=>p.value.toFixed(2),color:'#8FA3BD',fontSize:10}}]});
+
+/* IV */
+mk('c_iv',{grid:GRID,tooltip:{trigger:'axis'},xAxis:{type:'category',data:IV_TOP.map(d=>d.name),...AX,
+ axisLabel:{color:'#8FA3BD',fontSize:10,rotate:35}},
+ yAxis:{type:'value',...AX},series:[{type:'bar',data:IV_TOP.map(d=>d.value),barWidth:'60%',
+  itemStyle:{color:'#2DD4BF'},label:{show:true,position:'top',color:'#8FA3BD',fontSize:9,formatter:p=>p.value.toFixed(3)}}]});
+
+/* PSI */
+mk('c_psi',{grid:{left:60,right:30,top:16,bottom:30},tooltip:{trigger:'axis'},xAxis:{type:'value',...AX},
+ yAxis:{type:'category',data:PSI_TOP.map(d=>d.name),axisLabel:{color:'#8FA3BD',fontSize:11}},
+ series:[{type:'bar',data:PSI_TOP.map(d=>({value:d.value,itemStyle:{color:d.value>0.25?'#F0656A':'#F0A94D'}})),barWidth:14,
+  markLine:{data:[{xAxis:0.25}],lineStyle:{color:'#F0656A',type:'dashed'},label:{color:'#F0656A',formatter:'PSI=0.25'}}}]});
+
+/* XGB 重要性 */
+mk('c_imp_xgb',{grid:{left:120,right:40,top:16,bottom:30},tooltip:{trigger:'axis'},
+ xAxis:{type:'value',axisLabel:{color:'#8FA3BD'},splitLine:{lineStyle:{color:'rgba(30,43,69,.5)'}}},
+ yAxis:{type:'category',data:IMP_XGB.map(d=>d.name),axisLabel:{color:'#8FA3BD',fontSize:11}},
+ series:[{type:'bar',data:IMP_XGB.map(d=>d.value),barWidth:12,itemStyle:{color:'#38BDF8'},
+  label:{show:true,position:'right',color:'#8FA3BD',fontSize:9}}]});
+
+/* LGB 重要性 */
+mk('c_imp_lgb',{grid:{left:120,right:40,top:16,bottom:30},tooltip:{trigger:'axis'},
+ xAxis:{type:'value',axisLabel:{color:'#8FA3BD'},splitLine:{lineStyle:{color:'rgba(30,43,69,.5)'}}},
+ yAxis:{type:'category',data:IMP_LGB.map(d=>d.name),axisLabel:{color:'#8FA3BD',fontSize:11}},
+ series:[{type:'bar',data:IMP_LGB.map(d=>d.value),barWidth:12,itemStyle:{color:'#2DD4BF'},
+  label:{show:true,position:'right',color:'#8FA3BD',fontSize:9}}]});
+
+/* LR 系数 */
+mk('c_imp_lr',{grid:{left:130,right:40,top:16,bottom:30},tooltip:{trigger:'axis'},
+ xAxis:{type:'value',axisLabel:{color:'#8FA3BD'},splitLine:{lineStyle:{color:'rgba(30,43,69,.5)'}}},
+ yAxis:{type:'category',data:IMP_LR.map(d=>d.name),axisLabel:{color:'#8FA3BD',fontSize:11}},
+ series:[{type:'bar',data:IMP_LR.map(d=>d.value),barWidth:12,itemStyle:{color:'#7C9BD9'},
+  label:{show:true,position:'right',color:'#8FA3BD',fontSize:9}}]});
+
+/* ROC */
+mk('c_roc',{grid:GRID,tooltip:{trigger:'axis'},legend:{top:0,textStyle:{color:'#8FA3BD'}},
+ xAxis:{type:'value',name:'FPR',min:0,max:1,...AX},yAxis:{type:'value',name:'TPR',min:0,max:1,...AX},
+ series:[
+  {name:'LR AUC=0.6521',type:'line',data:ROC_LR.tpr,showSymbol:false,smooth:true,lineStyle:{width:2,color:'#38BDF8'}},
+  {name:'XGB AUC=0.6686',type:'line',data:ROC_XGB.tpr,showSymbol:false,smooth:true,lineStyle:{width:2.5,color:'#2DD4BF'}},
+  {name:'LGB AUC=0.6649',type:'line',data:ROC_LGB.tpr,showSymbol:false,smooth:true,lineStyle:{width:2,color:'#F0A94D'}},
+  {name:'Random',type:'line',data:[0,1],showSymbol:false,lineStyle:{type:'dashed',color:'#3A4A6A'}}
+ ]});
+
+/* KS */
+mk('c_ks',{grid:GRID,tooltip:{trigger:'axis'},legend:{top:0,textStyle:{color:'#8FA3BD'}},
+ xAxis:{type:'category',data:KS.fpr.map((_,i)=>i),name:'样本排序(升序)',...AX,axisLabel:{color:'#8FA3BD',fontSize:10}},
+ yAxis:{type:'value',name:'累积占比',...AX},
+ series:[
+  {name:'TPR(好→坏累积)',type:'line',data:KS.tpr,showSymbol:false,smooth:true,lineStyle:{width:2.5,color:'#2DD4BF'}},
+  {name:'FPR',type:'line',data:KS.fpr,showSymbol:false,smooth:true,lineStyle:{width:2,color:'#38BDF8'}},
+  {name:'TPR-FPR',type:'line',data:KS.tpr.map((t,i)=>+(t-KS.fpr[i]).toFixed(4)),showSymbol:false,smooth:true,lineStyle:{width:2,color:'#F0A94D'}}
+ ]});
+
+function distOpt(d){
+ const bins=d.train.map((_,i)=>i+1);
+ return {grid:{left:45,right:18,top:40,bottom:34},tooltip:{trigger:'axis'},legend:{top:0,textStyle:{color:'#8FA3BD'}},
+  xAxis:{type:'category',data:bins,name:'分数分箱(低→高)',...AX,axisLabel:{color:'#8FA3BD',fontSize:10}},
+  yAxis:{type:'value',name:'占比',...AX,axisLabel:{color:'#8FA3BD',fontSize:10,formatter:v=>(v*100).toFixed(0)+'%'}},
+  series:[
+   {name:'Train',type:'bar',data:d.train.map(v=>+v.toFixed(4)),barWidth:'38%',itemStyle:{color:'#38BDF8'}},
+   {name:'OOT',type:'bar',data:d.oot.map(v=>+v.toFixed(4)),barWidth:'38%',itemStyle:{color:'#F0656A'}}
+  ]};
+}
+mk('c_d_lr',distOpt(DIST.LR));
+mk('c_d_xgb',distOpt(DIST.XGB));
+window.addEventListener('resize',()=>{echarts.getInstanceByDom(document.getElementById('c_miss'))?.resize();
+['c_iv','c_psi','c_imp_xgb','c_imp_lgb','c_imp_lr','c_roc','c_ks','c_d_lr','c_d_xgb'].forEach(id=>echarts.getInstanceByDom(document.getElementById(id))?.resize())});
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->
