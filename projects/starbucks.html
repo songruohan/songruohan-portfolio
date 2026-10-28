@@ -165,13 +165,22 @@
       <aside class="case-section__side"><span class="case-section__no">05</span><h2>完整看板</h2></aside>
       <div class="case-content">
         <h3>交互式数据看板</h3>
-        <p>以下为原始看板的完整嵌入，图表支持悬停与缩放。也可以在新窗口中全屏查看。</p>
+        <p>看板包含 6 张图表，支持悬停查看数值、地图缩放与全屏。为了避免首屏等待，点击下方按钮后再加载完整看板。</p>
         <div class="report-frame">
           <div class="report-frame__bar">
             <span>starbucks-dashboard.html / 6,945 stores</span>
             <a href="../reports/starbucks.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
           </div>
-          <iframe title="星巴克全国门店分布数据看板" data-src="../reports/starbucks.html" loading="lazy"></iframe>
+          <div class="report-stage">
+            <iframe title="星巴克全国门店分布数据看板" data-src="../reports/starbucks.html" data-manual loading="lazy"></iframe>
+            <div class="report-load" data-report-placeholder>
+              <span class="report-load__eyebrow">INTERACTIVE DASHBOARD / 6 CHARTS</span>
+              <h4>全国门店分布<br>完整数据看板</h4>
+              <p>省份门店数、全国地图、城市 TOP10、前五省份占比、河北省水位图与城市柱状图。</p>
+              <button class="btn" type="button" data-report-load>加载交互看板 <span aria-hidden="true">↗</span></button>
+              <small>约 1.5MB · 首次加载约需数秒</small>
+            </div>
+          </div>
         </div>
       </div>
     </section>

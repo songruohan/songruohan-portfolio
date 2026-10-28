@@ -166,13 +166,22 @@
       <aside class="case-section__side"><span class="case-section__no">05</span><h2>完整报告</h2></aside>
       <div class="case-content">
         <h3>交互式数据报告</h3>
-        <p>以下为原始 HTML 报告的完整嵌入，包含可交互图表。也可以在新窗口中全屏阅读。</p>
+        <p>报告提供 10 张可交互图表。为了避免首屏等待，点击下方按钮后再加载完整报告；也可以直接在新窗口打开。</p>
         <div class="report-frame">
           <div class="report-frame__bar">
             <span>credit-risk-report.html / 95,938 samples</span>
             <a href="../reports/credit.html" target="_blank" rel="noopener">新窗口打开 ↗</a>
           </div>
-          <iframe title="信贷风控评分模型分析报告" data-src="../reports/credit.html" loading="lazy"></iframe>
+          <div class="report-stage">
+            <iframe title="信贷风控评分模型分析报告" data-src="../reports/credit.html" data-manual loading="lazy"></iframe>
+            <div class="report-load" data-report-placeholder>
+              <span class="report-load__eyebrow">INTERACTIVE REPORT / 10 CHARTS</span>
+              <h4>申请评分卡模型<br>完整分析报告</h4>
+              <p>数据概览、IV / PSI、特征重要性、模型评估与 OOT 结论。加载后所有图表支持悬停查看数值。</p>
+              <button class="btn" type="button" data-report-load>加载交互报告 <span aria-hidden="true">↗</span></button>
+              <small>约 500KB · 首次加载约需数秒</small>
+            </div>
+          </div>
         </div>
       </div>
     </section>

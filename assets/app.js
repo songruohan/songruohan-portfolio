@@ -238,8 +238,27 @@
     });
   });
 
+  /* Manual report loading */
+  document.querySelectorAll('[data-report-load]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var stage = button.closest('.report-stage');
+      if (!stage) return;
+      var frame = stage.querySelector('iframe[data-src]');
+      var placeholder = stage.querySelector('[data-report-placeholder]');
+      if (!frame) return;
+      button.disabled = true;
+      button.textContent = '正在加载…';
+      frame.addEventListener('load', function () {
+        if (placeholder) placeholder.classList.add('is-hidden');
+      }, { once: true });
+      frame.src = frame.getAttribute('data-src');
+      frame.removeAttribute('data-src');
+    });
+  });
+
   /* Lazy iframe: only load report when scrolled close */
   document.querySelectorAll('iframe[data-src]').forEach(function (frame) {
+    if (frame.hasAttribute('data-manual')) return;
     if (!('IntersectionObserver' in window)) {
       frame.src = frame.getAttribute('data-src');
       return;
